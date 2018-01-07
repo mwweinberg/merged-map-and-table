@@ -1,0 +1,117 @@
+
+
+};
+// This adds the data to the map
+map.on('load', function (e) {
+// This is where your '.addLayer()' used to be, instead add only the source without styling a layer
+map.addSource("places", {
+"type": "geojson",
+"data": stores
+});
+// Initialize the list
+buildLocationList(stores);
+});
+// This is where your interactions with the symbol layer used to be
+// Now you have interactions with DOM markers instead
+stores.features.forEach(function(marker, i) {
+// Create an img element for the marker
+var el = document.createElement('div');
+el.id = "marker-" + i;
+el.className = 'marker';
+el.style.left='-10px';
+el.style.top='-10px';
+// Add markers to the map at all points
+new mapboxgl.Marker(el)
+  .setLngLat(marker.geometry.coordinates)
+  .addTo(map);
+el.addEventListener('click', function(e){
+  // 1. Fly to the point
+  flyToStore(marker);
+  // 2. Close all other popups and display popup for clicked store
+  createPopUp(marker);
+  // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+  var activeItem = document.getElementsByClassName('active');
+  e.stopPropagation();
+  if (activeItem[0]) {
+     activeItem[0].classList.remove('active');
+  }
+  var listing = document.getElementById('listing-' + i);
+  listing.classList.add('active');
+  //YES!!!! FOUND HERE: http://stackoverflow.com/questions/31296373/auto-scroll-listing-on-marker-click-in-mapbox
+  listing.scrollIntoView(true);
+});
+});
+function flyToStore(currentFeature) {
+map.flyTo({
+  center: currentFeature.geometry.coordinates,
+  zoom: 11
+});
+}
+function createPopUp(currentFeature) {
+var popUps = document.getElementsByClassName('mapboxgl-popup');
+if (popUps[0]) popUps[0].remove();
+//added these two chunks in order to have dynamic hyperlinks to NGO websites in popups. god bless you https://bencollier.net/2011/05/quickly-creating-an-html-link-in-javascript/
+//this got me the if-then third line (last solution on page) http://stackoverflow.com/questions/711536/javascript-define-a-variable-if-it-doesnt-exist
+var text_en = 'English';
+var html_en = text_en.link(currentFeature.properties.website_en);
+if (typeof currentFeature.properties.website_en === 'undefined') {html_en = ""};
+var text_ch = 'Chinese';
+var html_ch = text_ch.link(currentFeature.properties.website_ch);
+if (typeof currentFeature.properties.website_ch === 'undefined') {html_ch = ""};
+//if you'd rather have a close button instead of having popups close by clicking elsewhere on the map, just take out the lines related to .mapboxgl-popup-close-button in the CSS =    .mapboxgl-popup-close-button {display:none;}
+var popup = new mapboxgl.Popup({closeOnClick: true})
+    .setLngLat(currentFeature.geometry.coordinates)
+    .setHTML(
+             '<h3>' + currentFeature.properties.orgname_en + ' / ' + currentFeature.properties.orgname_ch + '</h3>' +
+             '<h4>'+ "<b>Origin: </b>" + currentFeature.properties.originloc + '</h4>' +
+             '<h4>'+ "<b>Field of Work: </b>" + currentFeature.properties.sector + '</h4>' +
+             '<h4>'+ "<b>Professional Supervisory Unit: </b>" + currentFeature.properties.psu_en + '</h4>' +
+             '<h4>'+ "<b>Registration Location: </b>" + currentFeature.properties.regloc + '</h4>' +
+             '<h4>'+ "<b>Date of Registration: </b>" + currentFeature.properties.regdate + '</h4>' +
+             '<h4>'+ "<b>Permitted Area(s) of Operation: </b>" + currentFeature.properties.actarea + '</h4>' +
+             '<h4>'+ "<b>Website(s): </b>" + "<ins><i>" + html_en + "</i></ins>" + "&nbsp&nbsp" + "<ins><i>" + html_ch + "</i></ins>" + '</h4>'
+           )
+    .addTo(map);
+}
+function buildLocationList(data) {
+for (i = 0; i < data.features.length; i++) {
+var currentFeature = data.features[i];
+var prop = currentFeature.properties;
+var listings = document.getElementById('listings');
+var listing = listings.appendChild(document.createElement('div'));
+listing.className = 'item';
+listing.id = "listing-" + i;
+var link = listing.appendChild(document.createElement('a'));
+link.href = '#';
+link.className = 'title';
+link.dataPosition = i;
+link.innerHTML = prop.orgname_en + ' / ' + prop.orgname_ch;
+//this used to show the stuff below the org name in the sidebar, just uncomment to reactivate
+// var details = listing.appendChild(document.createElement('div'));
+// details.innerHTML = prop.orgname_ch;
+//maybe try out this now-useless code for the jQuery scrolltop
+// http://stackoverflow.com/questions/38319475/how-make-when-click-marker-scroll-to-sidebar-item
+// https://www.w3schools.com/jquery/css_scrolltop.asp
+if (prop.phone) {
+  details.innerHTML += ' &middot; ' + prop.phoneFormatted;
+}
+link.addEventListener('click', function(e){
+  // Update the currentFeature to the store associated with the clicked link
+  var clickedListing = data.features[this.dataPosition];
+  // 1. Fly to the point
+  flyToStore(clickedListing);
+  // 2. Close all other popups and display popup for clicked store
+  createPopUp(clickedListing);
+  // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+  var activeItem = document.getElementsByClassName('active');
+  if (activeItem[0]) {
+     activeItem[0].classList.remove('active');
+  }
+  this.parentNode.classList.add('active');
+});
+}
+}
+map.addControl(new mapboxgl.NavigationControl());
+</script>
+</body>
+</html>

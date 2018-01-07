@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset='utf-8' />
+      <title>The China NGO Project - Registered Offices</title>
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet'>
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js'></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' rel='stylesheet' />
+
+      <style>
+       @font-face {
+         font-family: 'DrukText';
+         src: url('../fonts/Druk-Medium-Web.woff');
+         font-weight: 500;
+         font-style: normal;
+       }
+       @font-face {
+         font-family: 'DrukText';
+         src: url('../fonts/Druk-MediumItalic-Web.woff');
+         font-weight: 500;
+         font-style: italic;
+       }
+       @font-face {
+         font-family: 'DrukText';
+         src: url('../fonts/Druk-Bold-Web.woff');
+         font-weight: 700;
+         font-style: normal;
+       }
+       @font-face {
+         font-family: 'DrukText';
+         src: url('../fonts/Druk-BoldItalic-Web.woff');
+         font-weight: 700;
+         font-style: italic;
+       }
+      @font-face {
+        font-family: 'PortraitText';
+        src: url('../fonts/Portrait-Regular-Web.woff');
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'PortraitText';
+        src: url('../fonts/Portrait-RegularItalic-Web.woff');
+        font-weight: 400;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: 'PortraitText';
+        src: url('../fonts/Portrait-Medium-Web.woff');
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'PortraitText';
+        src: url('../fonts/Portrait-MediumItalic-Web.woff');
+        font-weight: 500;
+        font-style: italic;
+      }
+        body {
+          color:#3c3c3c;
+          font:400 15px/22px 'PortraitText';
+          margin:0;
+          padding:0;
+          -webkit-font-smoothing:antialiased;
+        }
+        * {
+          -webkit-box-sizing:border-box;
+          -moz-box-sizing:border-box;
+          box-sizing:border-box;
+        }
+        .sidebar {
+          position:absolute;
+          width:33.3333%;
+          height:100%;
+          top:0;left:0;
+          overflow:hidden;
+          border-right:1px solid rgba(0,0,0,0.25);
+        }
+        .pad2 {
+          padding:20px;
+        }
+        .map {
+          position:absolute;
+          left:33.3333%;
+          width:66.6666%;
+          top:0;bottom:0;
+        }
+        h1 {
+          font-family:'PortraitText';
+          font-size:22px;
+          margin:0;
+          font-weight:600;
+          line-height: 20px;
+          padding: 20px 2px;
+        }
+        a {
+          color:#3c3c3c;
+          text-decoration:none;
+        }
+        a:hover {
+          color:#000000;
+        }
+        .heading {
+          background:#fff;
+          border-bottom:1px solid #e6e6e6;
+          min-height:60px;
+          line-height:60px;
+          padding:0 10px;
+        }
+        .listings {
+          height:100%;
+          overflow:auto;
+          padding-bottom:60px;
+        }
+        .listings .item {
+          display:block;
+          border-bottom:1px solid #e6e6e6;
+          padding:0px;
+          text-decoration:none;
+        }
+        .listings .item:last-child { border-bottom:none; }
+        .listings .item .title {
+          display:block;
+          color:#555555;
+          font-weight:700;
+        }
+        .listings .item .title small { font-weight:400; }
+        .listings .item.active .title,
+        .listings .item .title:hover { color:#ff1e32; }
+        .listings .item.active {
+          background-color:#e6e6e6;
+        }
+        ::-webkit-scrollbar {
+          width:3px;
+          height:3px;
+          border-left:0;
+          background:rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-track {
+          background:none;
+        }
+        ::-webkit-scrollbar-thumb {
+          background:#555555;
+          border-radius:0;
+        }
+        .marker {
+          border: none;
+          cursor: pointer;
+          height: 15px;
+          width: 15px;
+          background-image: url(marker-151.svg);
+          background-color: rgba(0, 0, 0 0);
+          transform: translate(28px, 56px, 0);
+        }
+        .clearfix { display:block; }
+        .clearfix:after {
+          content:'.';
+          display:block;
+          height:0;
+          clear:both;
+          visibility:hidden;
+        }
+        /* Marker tweaks */
+        .mapboxgl-popup {
+          padding-bottom: 25px;
+          padding-left: 15px;
+          max-width: 50%;
+        }
+        .mapboxgl-popup-content {
+          font:500 15px/22px 'PortraitText';
+          padding:0;
+        }
+        .mapboxgl-popup-content-wrapper {
+          padding:1%;
+        }
+        .mapboxgl-popup-content h3 {
+          background:#ff1e32;
+          color:#fff;
+          margin:0;
+          display:block;
+          padding:10px;
+          border-radius:3px 3px 0 0;
+          font-weight:700;
+          margin-top:-15px;
+        }
+        .mapboxgl-popup-content h4 {
+          margin:0;
+          display:block;
+          padding: 0px 10px 0px 10px;
+          font-weight:400;
+          margin: 0;
+        }
+        .mapboxgl-popup-content div {
+          padding:10px;
+        }
+        .mapboxgl-container .leaflet-marker-icon {
+          cursor:pointer;
+        }
+        .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+          margin-top: 15px;
+        }
+        .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+          border-bottom-color: #ffffff;
+        }
+      </style>
+  </head>
+
+  <body>
+    <div class='sidebar'>
+      <div class='heading'>
+        <h1>Registered Foreign NGO Representative Offices</h1>
+      </div>
+    <div id='listings' class='listings'></div>
+    </div>
+    <div id='map' class='map'> </div>
+
+  <script>
+  // This will let you use the .remove() function later on
+  if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+      if (this.parentNode) {
+          this.parentNode.removeChild(this);
+      }
+    };
+  }
+  mapboxgl.accessToken = 'pk.eyJ1IjoiamVzc2ljYWNoaW5maWxlIiwiYSI6ImNqMDAyN3FjNTA1Nzgyd2xzNzltcXQ1NmgifQ.uDti12v_OKz_yGqq5Bom0Q';
+  // This adds the map
+  var map = new mapboxgl.Map({
+    // container id specified in the HTML
+    container: 'map',
+    // style URL
+    style: 'mapbox://styles/jessicachinfile/cj3xjg7c418iz2sqv192o1pgc',
+    // initial position in [long, lat] format
+    center: [104.656404, 34.628137],
+    // initial zoom
+    zoom: 3
+  });
+//last updated March 21 2017
+  var stores = {
+    "type": "FeatureCollection",
+    "features":
