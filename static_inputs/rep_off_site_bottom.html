@@ -1,0 +1,22 @@
+table>
+
+<script src="./tablefilter/tablefilter.js"></script>
+
+<script>
+var filtersConfig = {
+    base_path: 'tablefilter/',
+    auto_filter: true,
+    auto_filter_delay: 1100, //milliseconds
+    filters_row_index: 1,
+    state: true,
+    alternate_rows: true,
+    rows_counter: true,
+    btn_reset: true,
+    status_bar: true,
+    msg_filter: 'Filtering...'
+};
+var tf = new TableFilter('filter', filtersConfig);
+tf.init();
+</script>
+
+<!–– add your tableizer data above this line––> </body> </html>
