@@ -69,6 +69,9 @@ def temp_act():
     temp_act_output_page_archive_filename = "archive/index_TA_table" + timestamp + ".html"
     temp_act_archive_page = open(temp_act_output_page_archive_filename, 'w')
 
+    #This is the bottom of the html page
+    temp_act_bottom_half = open('static_inputs/temp_act_site_bottom.html', 'r')
+
     #####for the regular page#######
     #writes the html to the new page
     for item in temp_act_top_half:
@@ -78,13 +81,14 @@ def temp_act():
     for item in temp_act_fixed_table:
         temp_act_output_page.write(item)
         temp_act_archive_page.write(item)
-    #closes out the page (this should be in the table but it isn't because I don't know why
-    temp_act_output_page.write("table> <!–– add your tableizer data above this line––> </body> </html>")
-    temp_act_archive_page.write("table> <!–– add your tableizer data above this line––> </body> </html>")
+    for item in temp_act_bottom_half:
+        temp_act_output_page.write(item)
+        temp_act_archive_page.write(item)
 
     temp_act_top_half.close()
     temp_act_output_page.close()
     temp_act_archive_page.close()
+    temp_act_bottom_half.close()
 
 ##########################################################
 #####rep-off-html-table###################################
@@ -145,6 +149,8 @@ def rep_off():
     rep_off_output_page_archive_filename = "archive/index_RO_table" + timestamp + ".html"
     rep_off_archive_page = open(rep_off_output_page_archive_filename, 'w')
 
+    #This is the bottom of the html page
+    rep_off_bottom_half = open('static_inputs/rep_off_site_bottom.html', 'r')
 
     #writes the html to the new page
     for item in rep_off_top_half:
@@ -154,13 +160,14 @@ def rep_off():
     for item in rep_off_fixed_table:
         rep_off_output_page.write(item)
         rep_off_archive_page.write(item)
-    #closes out the page (this should be in the table but it isn't because I don't know why
-    rep_off_output_page.write("table> <!–– add your tableizer data above this line––> </body> </html>")
-    rep_off_archive_page.write("table> <!–– add your tableizer data above this line––> </body> </html>")
+    for item in rep_off_bottom_half:
+        rep_off_output_page.write(item)
+        rep_off_archive_page.write(item)
 
     rep_off_top_half.close()
     rep_off_output_page.close()
     rep_off_archive_page.close()
+    rep_off_bottom_half.close()
 
 ##########################################################
 #####csv2mapjson###################################
