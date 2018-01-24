@@ -5,9 +5,6 @@ Expects the static_inputs to be in the same folder as the script.
 The two example csvs must be in the same folder as the script. 
 rename them without "example_".
 
-Create a directory called "archive" in the same folder.
-
-
 brings together a bunch of scripts to build the org maps and tables
 
 those scripts are:
