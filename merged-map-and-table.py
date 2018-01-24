@@ -5,6 +5,7 @@ import numpy as np
 import csv
 import json
 import time
+import os.path
 
 #inputs: tempactinput.csv, temp_act_site_top.html, repoffinput.csv, rep_off_site_top.html, map_top.html, map_bottom.html
 #temporary i/o: jsonholder.json
@@ -299,7 +300,9 @@ def rep_map():
     map_archive_page.close()
 
 
-
+#creates the archive directory if it doesn't exist
+if not os.path.exists('archive/'):
+    os.makedirs('archive/')
 
 temp_act()
 rep_off()
