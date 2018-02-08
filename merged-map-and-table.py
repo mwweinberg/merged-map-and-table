@@ -21,11 +21,11 @@ def temp_act():
 
 
     #load the csv as the dataframe with only the columns you care about
-    df_temp_act = pd.read_csv('tempactinput.csv', usecols = ['Organization Name (English)', 'Organization Name (Chinese)', 'Organization Origin', 'Chinese Partner Unit (English)', 'Chinese Partner Unit (Chinese)', 'Activity Name (English)', 'Activity Name (Chinese)', 'Activity Location (English)', 'Activity Location (Chinese)', 'Start Date', 'End Date'])
+    df_temp_act = pd.read_csv('tempactinput.csv', usecols = ['Organization Name (English)', 'Organization Name (Chinese)', 'Organization Origin', 'Chinese Partner Unit (English)', 'Chinese Partner Unit (Chinese)', 'Activity Name (English)', 'Activity Name (Chinese)', 'Activity Location (English)', 'Activity Location (Chinese)', 'Start Date', 'End Date', 'Chinese Partner Unit Type', 'CPU Professional Supervisory Unit (English)', 'CPU Professional Supervisory Unit (Chinese)'])
 
 
     #reorders the columns
-    columnsTitles = ['Organization Name (English)', 'Organization Name (Chinese)', 'Organization Origin', 'Chinese Partner Unit (English)', 'Chinese Partner Unit (Chinese)', 'Activity Name (English)', 'Activity Name (Chinese)', 'Activity Location (English)', 'Activity Location (Chinese)', 'Start Date', 'End Date']
+    columnsTitles = ['Organization Name (English)', 'Organization Name (Chinese)', 'Organization Origin', 'Activity Name (English)', 'Activity Name (Chinese)', 'Activity Location (English)', 'Activity Location (Chinese)', 'Start Date', 'End Date', 'Chinese Partner Unit (English)', 'Chinese Partner Unit (Chinese)', 'Chinese Partner Unit Type', 'CPU Professional Supervisory Unit (English)', 'CPU Professional Supervisory Unit (Chinese)']
     df_temp_act = df_temp_act.reindex(columns=columnsTitles)
 
     #prevents truncation of field data
@@ -39,8 +39,9 @@ def temp_act():
         #removes the formatting
         #changes the formatting for the table headers
         #I'm sure there is a more elegant way of doing this but I don't know it
-        fixed_table_1 = new_table.strip('<table border="0" class="dataframe tableizer-firstrow">')
-        fixed_table_1a = fixed_table_1.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
+        fixed_table_1c = new_table.strip('<table border="0" class="dataframe tableizer-firstrow">')
+        fixed_table_1b = fixed_table_1c.strip('1" class="dataframe tableizer-firstrow">')
+        fixed_table_1a = fixed_table_1b.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
         fixed_table_2 = fixed_table_1a.replace('<th>Organization Name (English)</th>', '<th style="width:10%">Organization Name (English)</th>')
         fixed_table_3 = fixed_table_2.replace('<th>Organization Name (Chinese)</th>', '<th style="width:10%">Organization Name (Chinese)</th>')
         fixed_table_4 = fixed_table_3.replace('<th>Organization Origin</th>', '<th style="width:10%">Organization Origin</th>')
