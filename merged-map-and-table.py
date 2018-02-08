@@ -5,7 +5,6 @@ import numpy as np
 import csv
 import json
 import time
-import os.path
 
 #inputs: tempactinput.csv, temp_act_site_top.html, repoffinput.csv, rep_off_site_top.html, map_top.html, map_bottom.html
 #temporary i/o: jsonholder.json
@@ -35,7 +34,7 @@ def temp_act():
     def temp_act_shuffle():
         #outputs html to a file
         #index = false is to avoid printing the index column
-        new_table = df_temp_act.to_html(index = False, classes = ['tableizer-firstrow'], border = 0)
+        new_table = df_temp_act.to_html(index = False, classes = ['tableizer-firstrow'])
 
         #removes the formatting
         #changes the formatting for the table headers
@@ -115,15 +114,16 @@ def rep_off():
     def rep_off_shuffle():
         #outputs html to a file
         #index = false is to avoid printing the index column
-        new_table = df_rep_off.to_html(index = False, classes = ['tableizer-firstrow'], border = 0)
+        new_table = df_rep_off.to_html(index = False, classes = ['tableizer-firstrow'])
 
         #removes the formatting
         #changes the formatting for the table headers
         #I'm sure there is a more elegant way of doing this but I don't know it
 
 
-        fixed_table_1 = new_table.strip('<table border="0" class="dataframe tableizer-firstrow">')
-        fixed_table_1a = fixed_table_1.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
+        fixed_table_1c = new_table.strip('<table border="0" class="dataframe tableizer-firstrow">')
+        fixed_table_1b = fixed_table_1c.strip('1" class="dataframe tableizer-firstrow">')
+        fixed_table_1a = fixed_table_1b.replace('<tr style="text-align: right;">', '<tr style="text-align: center;">')
         fixed_table_2 = fixed_table_1a.replace('<th>Organization Name (English)</th>', '<th style="width:10%">Organization Name (English)</th>')
         fixed_table_3 = fixed_table_2.replace('<th>Organization Name (Chinese)</th>', '<th style="width:10%">Organization Name (Chinese)</th>')
         fixed_table_4 = fixed_table_3.replace('<th>Professional Supervisory Unit (English)</th>', '<th style="width:10%">Professional Supervisory Unit (English)</th>')
@@ -300,9 +300,7 @@ def rep_map():
     map_archive_page.close()
 
 
-#creates the archive directory if it doesn't exist
-if not os.path.exists('archive/'):
-    os.makedirs('archive/')
+
 
 temp_act()
 rep_off()
